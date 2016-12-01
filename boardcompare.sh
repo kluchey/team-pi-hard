@@ -11,6 +11,8 @@ set boardref [split "a8 b8 c8 d8 e8 f8 g8 h8 a7 b7 c7 d7 e7 f7 g7 h7 a6 b6 c6 d6
 #	is still 65 in loop then we aren't done searchin'
 	set initPos 65
 	set finaPos 65
+	set thirPos 65
+	set fourPos 65
 	set i 0
 
 #	loop that controls board comparison, when both positions
@@ -29,14 +31,22 @@ set boardref [split "a8 b8 c8 d8 e8 f8 g8 h8 a7 b7 c7 d7 e7 f7 g7 h7 a6 b6 c6 d6
 #			has a ".", implying this is the position from
 #			which the piece has moved
 			if {[string equal "." [lindex $secondboard $i]]} {
-				set initPos $i
+				if {$initPos == 65} {
+					set initPos $i
+				} else {
+					set thirPos $i
+				}
 				incr i 1
 				continue
 
 #			else the position is necessarily the board square
 #			onto which the piece has moved
 			} else {
-				set finaPos $i
+				if {$finaPos == 65} {
+					set finaPos $i
+				} else {
+					set fourPos $i
+				}
 				incr i 1
 				continue
 			}
@@ -45,7 +55,32 @@ set boardref [split "a8 b8 c8 d8 e8 f8 g8 h8 a7 b7 c7 d7 e7 f7 g7 h7 a6 b6 c6 d6
 #puts "$initPos"
 #puts "$finaPos"
 #	we could return #exactAlgMove here but there might be a promotion of a pawn
-	set exactAlgMove [string cat [lindex $boardref $initPos] [lindex $boardref $finaPos]]
+	if {$thirPos == $fourPos} {
+		set exactAlgMove [string cat [lindex $boardref $initPos] [lindex $boardref $finaPos]]
+	} elseif {$fourPos == 65} {
+		if {[string equal [lindex $secondboard $finaPos] [lindex $firstboard $initPos]]} {
+			set exactAlgMove [string cat [lindex $boardref $initPos] [lindex $boardref $finaPos]]
+		} else {
+			set exactAlgMove [string cat [lindex $boardref $thirPos] [lindex $boardref $finaPos]]
+			set initPos $thirPos
+		}
+	} else {
+		if {[string equal -nocase "K" [lindex $secondboard $finaPos]]} {
+			if {$finaPos == 2 || $finaPos == 6} {
+				set initPos 4
+			} else {
+				set initPos 60
+			}
+		} else {
+			set finaPos $fourPos
+			if {$finaPos == 2 || $finaPos == 6} {
+				set initPos 4
+			} else {
+				set initPos 60
+			}
+		}
+		set exactAlgMove [string cat [lindex $boardref $initPos] [lindex $boardref $finaPos]]
+	}
 	set promotion ""
 
 #	checks for promotion of pawn by seeing if initial position had a pawn and
@@ -59,8 +94,8 @@ set boardref [split "a8 b8 c8 d8 e8 f8 g8 h8 a7 b7 c7 d7 e7 f7 g7 h7 a6 b6 c6 d6
 }
 
 # test
-#set b1 [split "p . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ." ]
-#set b2 [split ". q . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ." ]
+#set b1 [split ". . . . . . . . . . . . . . . . P p . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."]
+#set b2 [split ". . . . . . . . . P . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ."]
 #puts [convertMove $b1 $b2]
 
 
