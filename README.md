@@ -5,14 +5,16 @@ Dear David Jao,
 
 please first sudo apt-get install the latest expect and gnuchess libraries:
 
-
+----------------------------
 
 sudo apt-get install gnuchess
 
 sudo apt-get install expect
 
+----------------------------
 
+the only file you need is chessfull.sh
 
 to call our program in the command line please navigate to containing
 
-directory and enter ./____.sh into the command line
+directory and enter ./chessfull.sh into the command line
