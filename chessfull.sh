@@ -8,7 +8,7 @@
 proc convertMove {firstboard secondboard} {
 
 # dumb way of defining chess board positions... indexed 0-63
-set boardref [split "a8 b8 c8 d8 e8 f8 g8 h8 a7 b7 c7 d7 e7 f7 g7 h7 a6 b6 c6 d6 e6 f6 g6 h6 a5 b5 c5 d5 e5 f5 g5 h5 a4 b4 c4 d4 e4 f4 g4 h4 a4 b4 c4 d4 e4 f4 g4 h4 a3 b3 c3 d3 e3 f3 g3 h3 a2 b2 c2 d2 e2 f2 g2 h2 a1 b1 c1 d1 e1 f1 g1 h1"]
+set boardref [split "a8 b8 c8 d8 e8 f8 g8 h8 a7 b7 c7 d7 e7 f7 g7 h7 a6 b6 c6 d6 e6 f6 g6 h6 a5 b5 c5 d5 e5 f5 g5 h5 a4 b4 c4 d4 e4 f4 g4 h4 a3 b3 c3 d3 e3 f3 g3 h3 a2 b2 c2 d2 e2 f2 g2 h2 a1 b1 c1 d1 e1 f1 g1 h1"]
 
 #	these variables will never be set to >63 so if either
 #	is still 65 in loop then we aren't done searchin'
@@ -113,7 +113,7 @@ expect " :"
  if {[string equal -nocase [lindex $argv 0] "white"]} {
  send "a2a3\r"
  expect " :"
-send_user "a2a3"
+send_user "a2a3\n"
 }
 # infinite outer loop to always be running
 # right now user has to quit, which is an error
@@ -138,7 +138,7 @@ if {![string equal [lindex $ChessOutput $temp2] "Invalid"]} {
 
 # First obtain old board for converter
 # should still be in chess output
-set board1 [lrange $ChessOutput 10 end]
+set board1 [lrange $ChessOutput [expr [llength $ChessOutput] - 67] end]
 #send_user "[lindex $board1 0]"
 send "show capture\r"
 expect ": "
@@ -158,7 +158,7 @@ if {![string equal [lindex $ChessOutput 11] "generated"]} {
 	set temp [regexp -all -inline {\S+} $expect_out(buffer)]
 	set ChessOutput [split $temp "\n "]
 	
-	set board2 [lrange $ChessOutput 11 end]
+	set board2 [lrange $ChessOutput [expr [llength $ChessOutput] - 67] end]
 	send_user "[convertMove $board1 $board2]\n"
 } else {
 	# capture not possible, move on to moving out of check
@@ -178,7 +178,8 @@ if {![string equal [lindex $ChessOutput 11] "generated"]} {
 	set ChessOutput [split $temp "\n "]
 
 	
-	set board2 [lrange $ChessOutput 11 end]
+	set board2 [lrange $ChessOutput [expr [llength $ChessOutput] - 67] end]
+
 	send_user "[convertMove $board1 $board2]\n"
 
 #	} else {
