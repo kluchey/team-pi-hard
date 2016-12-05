@@ -15,6 +15,16 @@ sudo apt-get install expect
 
 the only file you need is chessfull.sh
 
+----------------------------
+
+*** Please use the command:
+
+*** chmod 755 chessfull.sh
+
+----------------------------
+
 to call our program in the command line please navigate to containing
 
-directory and enter ./chessfull.sh into the command line
+directory and enter './chessfull.sh white' or './chessfull.sh black'
+
+without quotes, depending on which colour our program is to play.
