@@ -17,9 +17,9 @@ the only file you need is chessfull.sh
 
 ----------------------------
 
-*** Please use the command:
+*** Please use the command: ***
 
-*** chmod 755 chessfull.sh
+chmod 755 chessfull.sh
 
 ----------------------------
 
