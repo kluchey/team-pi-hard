@@ -1,6 +1,6 @@
 #!/usr/bin/expect
-#V5 hopefully 60%
-#boardcompare in same file? 
+#Team Pi-Hard: John Fletcher and Kieran Cluchey/
+#Uses GNUChess and Expect libraries.
 
 
 # define function that allows conversion of board states into
